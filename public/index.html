@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Personalidades Históricas</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Cadastro de Personalidades Históricas</h1>
+        <nav>
+            <a href="index.html" class="active">Listagem</a>
+            <a href="cadastro_personalidades.html">Cadastrar Nova Personalidade</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container">
+            <h2>Lista de Personalidades Históricas</h2>
+            <div id="loading" class="loading">Carregando personalidades...</div>
+            <div id="error-message" class="error-message" style="display: none;"></div>
+            <div id="personalidades-container" class="personalidades-grid"></div>
+        </section>
+    </main>
+
+    <script src="assets/scripts/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarPersonalidades();
+        });
+    </script>
+</body>
+</html>
+
