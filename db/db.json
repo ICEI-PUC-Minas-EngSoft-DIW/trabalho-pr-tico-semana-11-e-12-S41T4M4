@@ -1,18 +1,34 @@
 {
-  "usuarios": [
+  "personalidades": [
     {
-      "id": "187cb7e5-e097-4224-8bc7-b610c855e2b1",
-      "login": "admin",
-      "senha": "123",
-      "nome": "Administrador do Sistema",
-      "email": "admin@abc.com"
+      "id": "1a2b3c4d-5e6f-7890-abcd-ef1234567890",
+      "nome": "Albert Einstein",
+      "nascimento": "1879-03-14",
+      "falecimento": "1955-04-18",
+      "nacionalidade": "Alemão",
+      "profissao": "Físico",
+      "contribuicao": "Desenvolveu a Teoria da Relatividade e a fórmula E=mc²",
+      "imagem": "https://via.placeholder.com/300x400?text=Albert+Einstein"
     },
     {
-      "id": "ec37c83d-4b7f-458d-9e10-3fda7d37cd3e",
-      "login": "user",
-      "senha": "123",
-      "nome": "Usuario Comum",
-      "email": "user@abc.com"
+      "id": "2b3c4d5e-6f78-9012-bcde-f12345678901",
+      "nome": "Marie Curie",
+      "nascimento": "1867-11-07",
+      "falecimento": "1934-07-04",
+      "nacionalidade": "Polonesa",
+      "profissao": "Física e Química",
+      "contribuicao": "Primeira mulher a ganhar um Prêmio Nobel e primeira pessoa a ganhar dois Prêmios Nobel em diferentes áreas",
+      "imagem": "https://via.placeholder.com/300x400?text=Marie+Curie"
+    },
+    {
+      "id": "3c4d5e6f-7890-1234-cdef-123456789012",
+      "nome": "Leonardo da Vinci",
+      "nascimento": "1452-04-15",
+      "falecimento": "1519-05-02",
+      "nacionalidade": "Italiano",
+      "profissao": "Artista e Inventor",
+      "contribuicao": "Considerado um dos maiores gênios da humanidade, destacou-se como pintor, escultor, arquiteto, engenheiro e inventor",
+      "imagem": "https://via.placeholder.com/300x400?text=Leonardo+da+Vinci"
     }
   ]
 }
