@@ -71,7 +71,6 @@ async function carregarDetalhesPersonalidade(id) {
 
         containerEl.innerHTML = `
             <div class="detalhes-content">
-                ${personalidade.imagem ? `<div class="personalidade-imagem"><img src="${escapeHtml(personalidade.imagem)}" alt="${escapeHtml(personalidade.nome)}" onerror="this.style.display='none'"></div>` : ''}
                 <div class="detalhes-item">
                     <label>ID:</label>
                     <span>${escapeHtml(personalidade.id)}</span>
