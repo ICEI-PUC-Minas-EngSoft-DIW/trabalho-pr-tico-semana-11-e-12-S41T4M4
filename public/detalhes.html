@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Personalidade</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Detalhes da Personalidade</h1>
+        <nav>
+            <a href="index.html">Listagem</a>
+            <a href="cadastro_personalidades.html">Cadastrar Nova Personalidade</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container">
+            <div id="loading" class="loading">Carregando detalhes...</div>
+            <div id="error-message" class="error-message" style="display: none;"></div>
+            <div id="detalhes-container" class="detalhes-card"></div>
+            <div class="actions">
+                <button onclick="editarPersonalidade()" class="btn btn-primary">Editar Personalidade</button>
+                <button onclick="excluirPersonalidade()" class="btn btn-danger">Excluir Personalidade</button>
+                <a href="index.html" class="btn btn-secondary">Voltar</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="assets/scripts/app.js"></script>
+    <script>
+        let personalidadeId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            personalidadeId = urlParams.get('id');
+            
+            if (personalidadeId) {
+                carregarDetalhesPersonalidade(personalidadeId);
+            } else {
+                mostrarErro('ID da personalidade não fornecido.');
+            }
+        });
+
+        function editarPersonalidade() {
+            if (personalidadeId) {
+                window.location.href = `cadastro_personalidades.html?id=${personalidadeId}`;
+            }
+        }
+
+        async function excluirPersonalidade() {
+            if (!personalidadeId) return;
+
+            if (!confirm('Tem certeza que deseja excluir esta personalidade?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/personalidades/${personalidadeId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('Personalidade excluída com sucesso!');
+                    window.location.href = 'index.html';
+                } else {
+                    mostrarErro('Erro ao excluir personalidade.');
+                }
+            } catch (error) {
+                mostrarErro('Erro ao excluir personalidade: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Personalidade Histórica</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Cadastro de Personalidade Histórica</h1>
+        <nav>
+            <a href="index.html">Listagem</a>
+            <a href="cadastro_personalidades.html" class="active">Cadastrar Nova Personalidade</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container">
+            <h2 id="form-title">Nova Personalidade</h2>
+            <form id="form-personalidade" class="form-cadastro">
+                <div class="form-group">
+                    <label for="nome">Nome Completo *</label>
+                    <input type="text" id="nome" name="nome" required>
+                    <span class="error" id="error-nome"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="nascimento">Data de Nascimento *</label>
+                    <input type="date" id="nascimento" name="nascimento" required>
+                    <span class="error" id="error-nascimento"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="falecimento">Data de Falecimento</label>
+                    <input type="date" id="falecimento" name="falecimento">
+                    <span class="error" id="error-falecimento"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="nacionalidade">Nacionalidade *</label>
+                    <input type="text" id="nacionalidade" name="nacionalidade" required>
+                    <span class="error" id="error-nacionalidade"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="profissao">Profissão/Ocupação *</label>
+                    <input type="text" id="profissao" name="profissao" required>
+                    <span class="error" id="error-profissao"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="contribuicao">Contribuição Histórica *</label>
+                    <textarea id="contribuicao" name="contribuicao" rows="4" required></textarea>
+                    <span class="error" id="error-contribuicao"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="imagem">URL da Imagem</label>
+                    <input type="url" id="imagem" name="imagem" placeholder="https://exemplo.com/imagem.jpg">
+                    <span class="error" id="error-imagem"></span>
+                </div>
+
+                <div id="error-message" class="error-message" style="display: none;"></div>
+                <div id="success-message" class="success-message" style="display: none;"></div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <a href="index.html" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="assets/scripts/app.js"></script>
+    <script>
+        let personalidadeId = null;
+        let isEditMode = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            personalidadeId = urlParams.get('id');
+
+            if (personalidadeId) {
+                isEditMode = true;
+                document.getElementById('form-title').textContent = 'Editar Personalidade';
+                carregarPersonalidadeParaEdicao(personalidadeId);
+            }
+
+            document.getElementById('form-personalidade').addEventListener('submit', salvarPersonalidade);
+        });
+
+        async function carregarPersonalidadeParaEdicao(id) {
+            try {
+                const response = await fetch(`${API_URL}/personalidades/${id}`);
+                if (!response.ok) throw new Error('Erro ao carregar personalidade');
+
+                const personalidade = await response.json();
+                document.getElementById('nome').value = personalidade.nome || '';
+                document.getElementById('nascimento').value = personalidade.nascimento || '';
+                document.getElementById('falecimento').value = personalidade.falecimento || '';
+                document.getElementById('nacionalidade').value = personalidade.nacionalidade || '';
+                document.getElementById('profissao').value = personalidade.profissao || '';
+                document.getElementById('contribuicao').value = personalidade.contribuicao || '';
+                document.getElementById('imagem').value = personalidade.imagem || '';
+            } catch (error) {
+                mostrarErro('Erro ao carregar personalidade: ' + error.message);
+            }
+        }
+
+        async function salvarPersonalidade(event) {
+            event.preventDefault();
+
+            if (!validarFormulario()) {
+                return;
+            }
+
+            const personalidade = {
+                nome: document.getElementById('nome').value.trim(),
+                nascimento: document.getElementById('nascimento').value,
+                falecimento: document.getElementById('falecimento').value || null,
+                nacionalidade: document.getElementById('nacionalidade').value.trim(),
+                profissao: document.getElementById('profissao').value.trim(),
+                contribuicao: document.getElementById('contribuicao').value.trim(),
+                imagem: document.getElementById('imagem').value.trim() || null
+            };
+
+            try {
+                const url = isEditMode 
+                    ? `${API_URL}/personalidades/${personalidadeId}`
+                    : `${API_URL}/personalidades`;
+
+                const method = isEditMode ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(personalidade)
+                });
+
+                if (response.ok) {
+                    mostrarSucesso(isEditMode ? 'Personalidade atualizada com sucesso!' : 'Personalidade cadastrada com sucesso!');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } else {
+                    const errorData = await response.json();
+                    mostrarErro('Erro ao salvar personalidade: ' + (errorData.message || 'Erro desconhecido'));
+                }
+            } catch (error) {
+                mostrarErro('Erro ao salvar personalidade: ' + error.message);
+            }
+        }
+
+        function validarFormulario() {
+            let isValid = true;
+            const nome = document.getElementById('nome').value.trim();
+            const nascimento = document.getElementById('nascimento').value;
+            const nacionalidade = document.getElementById('nacionalidade').value.trim();
+            const profissao = document.getElementById('profissao').value.trim();
+            const contribuicao = document.getElementById('contribuicao').value.trim();
+            const falecimento = document.getElementById('falecimento').value;
+
+            // Limpar erros anteriores
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+            if (!nome || nome.length < 3) {
+                document.getElementById('error-nome').textContent = 'Nome deve ter pelo menos 3 caracteres';
+                isValid = false;
+            }
+
+            if (!nascimento) {
+                document.getElementById('error-nascimento').textContent = 'Data de nascimento é obrigatória';
+                isValid = false;
+            }
+
+            if (falecimento && nascimento && new Date(falecimento) < new Date(nascimento)) {
+                document.getElementById('error-falecimento').textContent = 'Data de falecimento não pode ser anterior à data de nascimento';
+                isValid = false;
+            }
+
+            if (!nacionalidade || nacionalidade.length < 2) {
+                document.getElementById('error-nacionalidade').textContent = 'Nacionalidade é obrigatória';
+                isValid = false;
+            }
+
+            if (!profissao || profissao.length < 2) {
+                document.getElementById('error-profissao').textContent = 'Profissão é obrigatória';
+                isValid = false;
+            }
+
+            if (!contribuicao || contribuicao.length < 10) {
+                document.getElementById('error-contribuicao').textContent = 'Contribuição deve ter pelo menos 10 caracteres';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function mostrarSucesso(mensagem) {
+            const successEl = document.getElementById('success-message');
+            successEl.textContent = mensagem;
+            successEl.style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
