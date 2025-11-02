@@ -25,8 +25,7 @@ A aplicação utiliza a entidade **personalidades** com a seguinte estrutura:
       "falecimento": "string (YYYY-MM-DD) ou null",
       "nacionalidade": "string",
       "profissao": "string",
-      "contribuicao": "string",
-      "imagem": "string (URL) ou null"
+      "contribuicao": "string"
     }
   ]
 }
@@ -41,7 +40,6 @@ A aplicação utiliza a entidade **personalidades** com a seguinte estrutura:
 - **nacionalidade**: Nacionalidade da personalidade
 - **profissao**: Profissão ou ocupação principal
 - **contribuicao**: Descrição da contribuição histórica da personalidade
-- **imagem**: URL da imagem da personalidade (opcional)
 
 ### Exemplo de Dados
 
@@ -54,11 +52,15 @@ O arquivo `db.json` atualmente contém 3 personalidades históricas de exemplo:
 
 **Print dos testes da API com Postman ou similar**
 
-<< COLOQUE A IMAGEM GET AQUI >>
+### GET - Listar Personalidades
+
+![GET - Listar Personalidades](get.png)
 
 Para testar GET: Faça uma requisição GET para `http://localhost:3000/personalidades`
 
-<< COLOQUE A IMAGEM POST AQUI >>
+### POST - Criar Nova Personalidade
+
+![POST - Criar Personalidade](post.png)
 
 Para testar POST: Faça uma requisição POST para `http://localhost:3000/personalidades` com body JSON contendo:
 ```json
@@ -68,22 +70,52 @@ Para testar POST: Faça uma requisição POST para `http://localhost:3000/person
   "falecimento": "1727-03-31",
   "nacionalidade": "Inglês",
   "profissao": "Físico e Matemático",
-  "contribuicao": "Desenvolveu a Lei da Gravitação Universal e as três leis do movimento",
-  "imagem": "https://exemplo.com/newton.jpg"
+  "contribuicao": "Desenvolveu a Lei da Gravitação Universal e as três leis do movimento"
 }
 ```
 
-<< COLOQUE A IMAGEM PUT AQUI >>
+**Configurações da requisição POST:**
+- **URL**: `http://localhost:3000/personalidades`
+- **Método**: POST
+- **Headers**: `Content-Type: application/json`
+- **Body** (JSON): O exemplo acima
+- **Resposta esperada**: Objeto com a personalidade criada incluindo o `id` gerado automaticamente
+
+### PUT - Atualizar Personalidade
+
+![PUT - Atualizar Personalidade](put.png)
 
 Para testar PUT: Faça uma requisição PUT para `http://localhost:3000/personalidades/{id}` com body JSON contendo os campos atualizados (incluindo o id)
 
-<< COLOQUE A IMAGEM DELETE AQUI >>
+**Exemplo de body JSON para PUT:**
+```json
+{
+  "id": "1a2b3c4d-5e6f-7890-abcd-ef1234567890",
+  "nome": "Albert Einstein",
+  "nascimento": "1879-03-14",
+  "falecimento": "1955-04-18",
+  "nacionalidade": "Alemão",
+  "profissao": "Físico Teórico",
+  "contribuicao": "Desenvolveu a Teoria da Relatividade e a fórmula E=mc², considerado um dos maiores físicos da história"
+}
+```
+
+**Configurações da requisição PUT:**
+- **URL**: `http://localhost:3000/personalidades/1a2b3c4d-5e6f-7890-abcd-ef1234567890` (substitua pelo ID real)
+- **Método**: PUT
+- **Headers**: `Content-Type: application/json`
+- **Body** (JSON): O exemplo acima com todos os campos incluindo o `id`
+- **Resposta esperada**: Objeto com a personalidade atualizada
+
+### DELETE - Excluir Personalidade
+
+![DELETE - Excluir Personalidade](delete.png)
 
 Para testar DELETE: Faça uma requisição DELETE para `http://localhost:3000/personalidades/{id}`
 
 **Print da aba NETWORK com requisições Fetch/XHR POST e GET**
 
-<<  COLOQUE A IMAGEM AQUI >>
+![Network - Requisições Fetch/XHR](network.png)
 
 Para obter este print:
 1. Abra o DevTools do navegador (F12)
